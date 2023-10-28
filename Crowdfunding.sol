@@ -11,12 +11,11 @@ contract Crowdfunding {
         Open,
         Close
     }
-    Statuses public currentStatus;
+    Statuses public currentStatus = Statuses.Open;
 
     constructor(uint _goal) {
         manager = msg.sender;
         goal = _goal;
-        currentStatus = Statuses.Open;
     }
 
     modifier isManager() {
@@ -25,7 +24,7 @@ contract Crowdfunding {
     }
 
     modifier isOpen() {
-        require(currentStatus == Statuses.Open, "The CroudFounding campaign is closed");
+        require(currentStatus == Statuses.Open, "The Crowdfunding campaign is closed");
         _;
     }
 
@@ -36,7 +35,7 @@ contract Crowdfunding {
     }
 
     function withdrawFound() public isManager {
-        require(currentStatus == Statuses.Close, "The CroudFounding campaign is not closed");
+        require(currentStatus == Statuses.Close, "The Crowdfunding campaign is not closed");
         require(!fundsTransferred, "Funds already transferred");
         (bool success, ) = payable(manager).call{value: totalBalance}("");
         require(success, "Transfer failed");
@@ -54,7 +53,7 @@ contract Crowdfunding {
     }
 
     function startNewCampain(uint _goal) public isManager {
-        require(currentStatus == Statuses.Close, "The CroudFounding campaign is not closed");
+        require(currentStatus == Statuses.Close, "The Crowdfunding campaign is not closed");
         require(fundsTransferred, "the funds have not yet been transferred");
         totalBalance = 0;
         donators = 0;
@@ -63,3 +62,4 @@ contract Crowdfunding {
         fundsTransferred = false;
     }
 }
+
