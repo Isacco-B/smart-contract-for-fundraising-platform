@@ -1,5 +1,3 @@
-# Start2Impact_Progetto_Intro_Blockchain
-
 The contract for a fundraising platform, and in particular, must contain:
 
 - A variable representing the total balance collected
